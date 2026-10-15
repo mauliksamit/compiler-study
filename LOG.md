@@ -11,3 +11,11 @@
   is verified by a NumPy emulation (25 cases, including a fully -inf block,
   which needed a NaN guard found while writing the emulation).
 - Next: run both notebooks per RUNBOOK.md and ingest the zips.
+
+## 2026-10-15 — Cold-clone check
+- Fresh clone of the local repository (no remote yet) into an empty folder:
+  `pytest` 26 passed (algorithm emulation + notebook/builder sync),
+  `scripts/ingest_results.py --check` up to date. The first clone was NOT
+  clean after the tests: on Windows the builder wrote CRLF while the repo
+  stores LF, so the sync test left both notebooks modified. Fixed (the builder
+  writes LF explicitly); a second fresh clone is clean after the tests.
