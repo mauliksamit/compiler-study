@@ -491,7 +491,9 @@ def main():
     out = ROOT / "notebooks"
     out.mkdir(exist_ok=True)
     for name, cells in (("01_block_eager_compile_xla.ipynb", NB1), ("02_triton_fused_softmax.ipynb", NB2)):
-        (out / name).write_text(json.dumps(nb(cells), indent=1) + "\n", encoding="utf-8")
+        # newline="\n": identical bytes on Windows and Linux (the repo stores LF)
+        with open(out / name, "w", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps(nb(cells), indent=1) + "\n")
         print("wrote", out / name)
 
 
