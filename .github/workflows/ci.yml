@@ -1,0 +1,19 @@
+name: CI
+# CPU-only checks: notebooks in sync with their builder, algorithm emulation
+# tests, and generated README/facts fresh. The notebooks themselves need a GPU
+# and are run by hand (RUNBOOK.md).
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+      - run: python scripts/ingest_results.py --check
